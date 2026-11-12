@@ -1,0 +1,157 @@
+<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow"></head><body><title>Tiến độ mục tiêu Vùng Quang</title>
+<style>
+:root{color-scheme:light;--navy:#173a8f;--paper:#f3f2f1;--white:#fff;--ink:#1d2433;--muted:#5f6675;--line:#d9dee7;
+--lk:#e3f4e6;--dt:#fbf3d9;--db:#f8e1ef;--fb:#fff59a;--tt:#cfd8fb;--tot:#ebe5fb;--org:#f6b26b;
+--up:#1f8a4c;--down:#c62828;--wait:#b7791f;--f:"Segoe UI",Arial,"Helvetica Neue",sans-serif}
+*{box-sizing:border-box}[hidden]{display:none!important}
+html,body{background:var(--paper);color:var(--ink);margin:0}
+body{font-family:var(--f);font-size:14px;line-height:1.45}
+.top{background:var(--navy);color:var(--white)}
+.in{max-width:1400px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.top .in{padding-block:14px;display:flex;flex-wrap:wrap;gap:6px 20px;align-items:baseline;justify-content:space-between}
+.top h1{margin:0;font-size:22px;text-transform:uppercase}
+.top .meta{font-size:13px;opacity:.9}
+main.in{padding-block:16px;display:flex;flex-direction:column;gap:16px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.card{background:var(--white);border-left:4px solid var(--navy);border-radius:6px;padding:10px 14px}
+.card .k{font-size:12px;color:var(--muted);text-transform:uppercase}
+.card .v{font-size:26px;font-weight:700}
+.card .s{font-size:12px;color:var(--muted)}
+.box{background:var(--white);border-radius:6px;padding:14px}
+.box h2{margin:0 0 10px;font-size:16px;color:var(--navy);text-transform:uppercase}
+.wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;font-size:13px;font-variant-numeric:tabular-nums}
+th,td{border:1px solid var(--line);padding:6px 8px;text-align:right;white-space:nowrap}
+th{font-weight:600;text-align:center;white-space:normal;min-width:64px}
+td.l,th.l{text-align:left}
+.g-lk{background:var(--lk)}.g-dt{background:var(--dt)}.g-db{background:var(--db)}.g-fb{background:var(--fb)}.g-tt{background:var(--tt)}.g-to{background:var(--tot)}.g-sa{background:var(--org)}
+tr.vung td{font-weight:700;background:#f4f6fb}
+.thuc{color:var(--down)}
+.d{display:inline-block;min-width:22px;padding:1px 6px;border-radius:10px;color:#fff;font-weight:700;text-align:center}
+.d5{background:#1f8a4c}.d4{background:#5a9e3a}.d3{background:#b7791f}.d2{background:#d9661f}.d1{background:#c62828}
+.loai{font-size:15px;font-weight:800}
+.lA\+,.lA{color:#1f8a4c}.lB{color:#2f7a68}.lC{color:#b7791f}.lD{color:#c62828}
+.note{font-size:12px;color:var(--muted);margin:8px 0 0}
+.can td{white-space:normal}
+.khoa{position:fixed;inset:0;z-index:50;background:rgba(23,58,143,.96);display:flex;align-items:center;justify-content:center;padding:16px}
+.khoa form{background:var(--white);border-radius:8px;padding:24px;width:min(380px,100%);display:flex;flex-direction:column;gap:12px}
+.khoa h2{margin:0;color:var(--navy);font-size:18px;text-transform:uppercase}
+.khoa input[type=password]{font:inherit;padding:10px;border:1px solid var(--line);border-radius:6px}
+.khoa button{font:inherit;padding:10px;border:0;border-radius:6px;background:var(--navy);color:#fff;font-weight:600}
+.khoa label{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--muted)}
+.msg{font-size:13px;color:var(--muted);margin:0}
+@media (max-width:560px){.top h1{font-size:17px}.card .v{font-size:22px}}
+</style>
+
+<div class="khoa" id="khoa" hidden><form id="k-form">
+  <h2>Tiến độ mục tiêu tháng</h2>
+  <p class="msg">Vùng Quang · nhập mật khẩu GĐKV gửi trong nhóm để xem.</p>
+  <input id="k-mk" type="password" autocomplete="current-password" placeholder="Mật khẩu" required>
+  <label><input id="k-nho" type="checkbox" checked> Ghi nhớ trên máy này</label>
+  <button type="submit">Xem báo cáo</button>
+  <p class="msg" id="k-msg"></p>
+</form></div>
+
+<div class="top"><div class="in">
+  <h1>Tiến độ mục tiêu &amp; xếp loại HQKD</h1>
+  <div class="meta" id="meta">Vùng Quang · 5 salon</div>
+</div></div>
+
+<main class="in" id="noi-dung" hidden>
+  <div class="cards" id="the"></div>
+  <section class="box">
+    <h2>Xếp loại theo salon</h2>
+    <div class="wrap"><table id="bang"></table></div>
+    <p class="note" id="ghi-chu"></p>
+  </section>
+  <section class="box">
+    <h2>Mỗi ngày còn lại cần làm bao nhiêu để đạt 5 điểm (runrate 95%)</h2>
+    <div class="wrap"><table class="can" id="can"></table></div>
+  </section>
+  <section class="box">
+    <h2>Điểm tổng theo ngày</h2>
+    <div class="wrap"><table id="lich-su"></table></div>
+  </section>
+  <section class="box">
+    <h2>Cách chấm điểm (chính sách áp dụng từ 07/2026)</h2>
+    <div class="wrap"><table>
+      <tr><th class="l">Tiêu chí</th><th>Trọng số</th><th>5đ</th><th>4đ</th><th>3đ</th><th>2đ</th><th>1đ</th></tr>
+      <tr><td class="l">Lượt khách (runrate)</td><td>15%</td><td>≥95%</td><td>≥90%</td><td>≥85%</td><td>≥80%</td><td>&lt;80%</td></tr>
+      <tr><td class="l">Doanh thu (runrate)</td><td>15%</td><td>≥95%</td><td>≥90%</td><td>≥85%</td><td>≥80%</td><td>&lt;80%</td></tr>
+      <tr><td class="l">Định biên Stylist/Skinner</td><td>20%</td><td>≥100%</td><td>≥95%</td><td>≥90%</td><td>≥85%</td><td>&lt;85%</td></tr>
+      <tr><td class="l">Tỷ lệ feedback 1-2-3 sao</td><td>25%</td><td>≤0,20%</td><td>≤0,40%</td><td>≤0,60%</td><td>≤0,80%</td><td>&gt;0,80%</td></tr>
+      <tr><td class="l">Điểm chấm vận hành của TTCL</td><td>25%</td><td>5đ</td><td>4đ</td><td>3đ</td><td>2đ</td><td>1đ</td></tr>
+    </table></div>
+    <p class="note">Xếp loại theo tổng điểm: A+ ≥4,5 · A ≥4,0 · B ≥3,5 · C ≥3,0 · D &lt;3,0. Runrate = thực đạt / (mục tiêu tháng × số ngày đã qua / số ngày trong tháng). Xét bậc theo quý: tăng 1 bậc khi có 1 tháng A+ hoặc từ 2 tháng A, không có tháng D. Cảnh báo khi từ 2 tháng C hoặc 1 tháng D.</p>
+  </section>
+</main>
+
+<script>
+(()=>{
+let NHUNG={"enc": {"salt": "ir2tqHhBDW1EyHwZ3VgL1g==", "iv": "583s8mQsySIpzKV9", "ct": "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", "iter": 200000}};
+const $=id=>document.getElementById(id);
+const nf=(v,d=0)=>v==null?'—':v.toLocaleString('vi-VN',{minimumFractionDigits:d,maximumFractionDigits:d});
+const pc=(v,d=1)=>v==null?'—':nf(v,d)+'%';
+const tr=v=>nf(v/1e6,1)+' tr';
+const dg=n=>`<span class='d d${n}'>${n}</span>`;
+const ng=s=>s.slice(8,10)+'/'+s.slice(5,7);
+
+function ve(D){
+  $('noi-dung').hidden=false;
+  $('meta').textContent=`Số lũy kế ${ng(D.tu)} đến ${ng(D.ngay)} · cập nhật ${D.cap_nhat.slice(11)} ${ng(D.cap_nhat.slice(0,10))}`;
+  const V=D.vung;
+  $('the').innerHTML=[
+    ['Xếp loại vùng',`<span class='loai l${V.loai}'>${V.loai}</span> · ${nf(V.tong,2)}`,'Tổng điểm có trọng số'],
+    ['Thời gian tháng',pc(D.tien_do_tg),`Đã qua ${D.da_qua}/${D.so_ngay} ngày, còn ${D.con_lai} ngày`],
+    ['Lượt khách',pc(V.rr_lk),`Runrate · ${nf(V.lk)} / ${nf(V.mt_lk)} khách`],
+    ['Doanh thu',pc(V.rr_dt),`Runrate · ${tr(V.dt)} / ${tr(V.mt_dt)}`],
+  ].map(([k,v,s])=>`<div class='card'><div class='k'>${k}</div><div class='v'>${v}</div><div class='s'>${s}</div></div>`).join('');
+
+  const h1=`<tr><th class='g-sa' rowspan=2>Salon</th><th class='g-sa' rowspan=2>SM</th>
+    <th class='g-lk' colspan=4>Lượt khách (15%)</th><th class='g-dt' colspan=4>Doanh thu (15%)</th>
+    <th class='g-db' colspan=4>Định biên St/Sk (20%)</th><th class='g-fb' colspan=3>Feedback (25%)</th>
+    <th class='g-tt' rowspan=2>Điểm TTCL (25%)</th><th class='g-to' rowspan=2>Tổng điểm</th><th class='g-to' rowspan=2>Xếp loại</th></tr>
+    <tr><th class='g-lk'>Mục tiêu</th><th class='g-lk'>Thực đạt</th><th class='g-lk'>Runrate</th><th class='g-lk'>Điểm</th>
+    <th class='g-dt'>Mục tiêu</th><th class='g-dt'>Thực đạt</th><th class='g-dt'>Runrate</th><th class='g-dt'>Điểm</th>
+    <th class='g-db'>Mục tiêu</th><th class='g-db'>Thực tế</th><th class='g-db'>Tỷ lệ</th><th class='g-db'>Điểm</th>
+    <th class='g-fb'>Bill 1-2-3 sao</th><th class='g-fb'>Tỷ lệ</th><th class='g-fb'>Điểm</th></tr>`;
+  const r=(x,sm)=>`<tr${sm===null?" class='vung'":''}><td class='l'>${x.ten}</td><td class='l'>${sm||''}</td>
+    <td>${nf(x.mt_lk)}</td><td class='thuc'>${nf(x.lk)}</td><td>${pc(x.rr_lk)}</td><td>${dg(x.diem.lk)}</td>
+    <td>${nf(x.mt_dt)}</td><td class='thuc'>${nf(x.dt)}</td><td>${pc(x.rr_dt)}</td><td>${dg(x.diem.dt)}</td>
+    <td>${nf(x.db_mt)}</td><td class='thuc'>${nf(x.db_tt,x.db_tt%1?1:0)}</td><td>${pc(x.pct_db)}</td><td>${dg(x.diem.db)}</td>
+    <td>${nf(x.xau)}</td><td>${pc(x.fb,2)}</td><td>${dg(x.diem.fb)}</td>
+    <td>${dg(x.diem.ttcl)}</td><td>${nf(x.tong,2)}</td><td><span class='loai l${x.loai}'>${x.loai}</span></td></tr>`;
+  const S=[...D.salon].sort((a,b)=>b.tong-a.tong);
+  $('bang').innerHTML=h1+S.map(x=>r(x,x.sm)).join('')+r(V,null);
+  const T=D.nhap_tay;
+  $('ghi-chu').textContent=`Lượt khách, doanh thu: báo cáo sale 0019 (${D.cap_nhat_trang||'cập nhật mỗi sáng'}). Định biên: ${T.dinh_bien.nguon}, số ngày ${ng(T.dinh_bien.cap_nhat)}. Feedback: ${T.feedback.nguon}, số ngày ${ng(T.feedback.cap_nhat)}; tỷ lệ = bill 1-2-3 sao / lượt khách lũy kế. TTCL: ${T.ttcl}.`;
+
+  const c=x=>{ const lk=x.can_lk, dt=x.can_dt; const ok=v=>v<=0?`<span style='color:var(--up)'>Đã đủ</span>`:null;
+    return `<tr${x===V?" class='vung'":''}><td class='l'>${x.ten}</td><td>${nf(x.lk/D.da_qua,0)}</td><td>${ok(lk)||nf(lk,0)}</td><td>${tr(x.dt/D.da_qua)}</td><td>${ok(dt)||tr(dt)}</td></tr>`; };
+  $('can').innerHTML=`<tr><th class='l'>Salon</th><th>Khách/ngày đang làm</th><th>Khách/ngày cần</th><th>DT/ngày đang làm</th><th>DT/ngày cần</th></tr>`+D.salon.map(c).join('')+c(V);
+
+  const L=D.lich_su||{}; const ngays=Object.keys(L).sort();
+  const ten=[...D.salon.map(x=>x.ten),V.ten];
+  $('lich-su').innerHTML=`<tr><th class='l'>Salon</th>${ngays.map(n=>`<th>${ng(n)}</th>`).join('')}</tr>`+
+    ten.map(t=>`<tr${t===V.ten?" class='vung'":''}><td class='l'>${t}</td>${ngays.map(n=>{const o=L[n][t]; return `<td>${o?`${nf(o.tong,2)} <span class='loai l${o.loai}' style='font-size:12px'>${o.loai}</span>`:'—'}</td>`;}).join('')}</tr>`).join('');
+}
+
+async function giaiMa(mk,enc){
+  const b=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0)), te=new TextEncoder();
+  const k0=await crypto.subtle.importKey('raw',te.encode(mk),'PBKDF2',false,['deriveKey']);
+  const k=await crypto.subtle.deriveKey({name:'PBKDF2',salt:b(enc.salt),iterations:enc.iter,hash:'SHA-256'},k0,{name:'AES-GCM',length:256},false,['decrypt']);
+  return JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:b(enc.iv)},k,b(enc.ct))));
+}
+if(NHUNG && NHUNG.enc){
+  const enc=NHUNG.enc; $('khoa').hidden=false;
+  const thu=async(mk,nho)=>{ let D; try{ D=await giaiMa(mk,enc); }catch{ return false; }
+    try{ if(nho) localStorage.setItem('tb-mk',mk); }catch{}
+    $('khoa').hidden=true; ve(D); return true; };
+  let daLuu=null; try{ daLuu=localStorage.getItem('tb-mk'); }catch{}
+  (async()=>{ if(!(daLuu && await thu(daLuu,false))) $('k-mk').focus(); })();
+  $('k-form').addEventListener('submit',async e=>{ e.preventDefault(); $('k-msg').textContent='Đang mở…';
+    if(!await thu($('k-mk').value.trim(),$('k-nho').checked)){ $('k-msg').textContent='Sai mật khẩu, anh/chị kiểm tra lại.'; $('k-mk').select(); } });
+} else if(NHUNG) ve(NHUNG);
+})();
+</script>
+</body></html>
